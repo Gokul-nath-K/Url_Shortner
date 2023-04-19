@@ -1,21 +1,22 @@
-import { urls } from "../Models/urlShortner";
+import { urls } from "../Models/url_shortner.model.js";
+import shortid from "shortid";
 
 
+const generateShortUrl = async (longUrl) => {
 
-export const generateShortUrl = async ( longUrl ) => {
+    const urlCode = shortid.generate(8);
 
-    const urlCode = `LUKOG`;
-
-    let url;
+    let url = [];
     await urls.findAll({
         where: {
             long_url: longUrl
         }
-    }).then((res) => url = res);
+    }).then((res) => res[0] ? url = res[0].dataValues : url = []);
 
 
-    if ( !url ) {
-        return url.shortUrl ;
+    if (url.length !== 0) {
+
+        return url.short_url;
     }
     else {
 
@@ -28,26 +29,22 @@ export const generateShortUrl = async ( longUrl ) => {
             date: new Date()
         })
 
-        return newUrl.short_url ;
+        return newUrl.short_url;
     }
-} 
+}
 
-export const getUrl = async () => {
+const getUrl = async (urlCode) => {
 
     let url;
     await urls.findAll({
         where: {
-            long_url: longUrl
+            url_code: urlCode
         }
-    }).then((res) => url = res);
+    }).then((res) => url = res[0].dataValues);
 
-    if (url.length !== 0) {
-
-        res.redirect(url[0].longUrl)
-    }
-    else {
-        request.json({
-            "error": " Url not found"
-        })
-    }
+    return url;
 }
+
+
+
+export const service = { generateShortUrl, getUrl };
