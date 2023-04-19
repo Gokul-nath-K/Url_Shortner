@@ -1,18 +1,26 @@
-import { Url } from '../Data/url.js'
-import * as service from '../Data/service.js';
-import { urls } from '../Models/urlShortner.js';
+import { service } from '../Services/service.js';
+
 
 export const shortenUrl = async (req, res) => {
 
     const { longUrl } = req.body;
-    res.json( service.generateShortUrl(longUrl) );
-    
+    res.send(await service.generateShortUrl(longUrl));
+
 }
 
-export const getUrl = (req, res) => {
-    const { urlCode } = req.params;
+export const getUrl = async (req, res) => {
 
-    
+    const { urlCode } = req.params;
+    let url = await service.getUrl(urlCode);
+
+    if (url) {
+
+        res.redirect(url.long_url)
+    }
+    else {
+
+        res.json({ "error": "Url not found" })
+    }
 }
 
 
