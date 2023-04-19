@@ -1,7 +1,7 @@
 import express from "express";
 
 import router from './src/Routers/router.js';
-import { sequelize } from "./src/Models/connection.js";
+import { sequelize } from "./src/Databases/connection.database.js";
 
 
 const app = express();
