@@ -4,7 +4,7 @@ import { service } from '../Services/service.js';
 export const shortenUrl = async (req, res) => {
 
     const { longUrl } = req.body;
-    res.send(await service.generateShortUrl(longUrl));
+    res.json(await service.generateShortUrl(longUrl));
 
 }
 
